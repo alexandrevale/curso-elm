@@ -1,0 +1,343 @@
+var _user$project$Bolsa$tiraAspas = function (palavra) {
+	return A2(
+		_elm_lang$core$String$filter,
+		function (x) {
+			return !_elm_lang$core$Native_Utils.eq(
+				x,
+				_elm_lang$core$Native_Utils.chr('\"'));
+		},
+		palavra);
+};
+var _user$project$Bolsa$viewStock = function (_p0) {
+	var _p1 = _p0;
+	var _p2 = _p1._1;
+	return A2(
+		_elm_lang$html$Html$tr,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$td,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						_user$project$Bolsa$tiraAspas(
+							_elm_lang$core$Basics$toString(_p1._0))),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$td,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(
+							_user$project$Bolsa$tiraAspas(
+								_elm_lang$core$Basics$toString(_p2.open_))),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$td,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_user$project$Bolsa$tiraAspas(
+									_elm_lang$core$Basics$toString(_p2.high))),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$td,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									_user$project$Bolsa$tiraAspas(
+										_elm_lang$core$Basics$toString(_p2.low))),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$td,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										_user$project$Bolsa$tiraAspas(
+											_elm_lang$core$Basics$toString(_p2.close))),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$td,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											_user$project$Bolsa$tiraAspas(
+												_elm_lang$core$Basics$toString(_p2.volume))),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Bolsa$Stock = F5(
+	function (a, b, c, d, e) {
+		return {open_: a, high: b, low: c, close: d, volume: e};
+	});
+var _user$project$Bolsa$decodeStock = A2(
+	_elm_lang$core$Json_Decode$field,
+	'Time Series (Daily)',
+	_elm_lang$core$Json_Decode$keyValuePairs(
+		A6(
+			_elm_lang$core$Json_Decode$map5,
+			_user$project$Bolsa$Stock,
+			A2(_elm_lang$core$Json_Decode$field, '1. open', _elm_lang$core$Json_Decode$string),
+			A2(_elm_lang$core$Json_Decode$field, '2. high', _elm_lang$core$Json_Decode$string),
+			A2(_elm_lang$core$Json_Decode$field, '3. low', _elm_lang$core$Json_Decode$string),
+			A2(_elm_lang$core$Json_Decode$field, '4. close', _elm_lang$core$Json_Decode$string),
+			A2(_elm_lang$core$Json_Decode$field, '5. volume', _elm_lang$core$Json_Decode$string))));
+var _user$project$Bolsa$Model = F2(
+	function (a, b) {
+		return {symbol: a, stocks: b};
+	});
+var _user$project$Bolsa$init = A2(
+	_user$project$Bolsa$Model,
+	'',
+	{ctor: '[]'});
+var _user$project$Bolsa$Resposta = function (a) {
+	return {ctor: 'Resposta', _0: a};
+};
+var _user$project$Bolsa$getStocks = function (symb) {
+	return A2(
+		_elm_lang$http$Http$send,
+		_user$project$Bolsa$Resposta,
+		A2(
+			_elm_lang$http$Http$get,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=',
+				A2(_elm_lang$core$Basics_ops['++'], symb, '&apikey=BWD5GUHO3AJMBYR0')),
+			_user$project$Bolsa$decodeStock));
+};
+var _user$project$Bolsa$update = F2(
+	function (msg, model) {
+		var _p3 = msg;
+		switch (_p3.ctor) {
+			case 'Symbol':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{symbol: _p3._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Submit':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Bolsa$getStocks(model.symbol)
+				};
+			default:
+				var _p4 = _p3._0;
+				if (_p4.ctor === 'Err') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{symbol: 'Inexistent Symbol!'}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{stocks: _p4._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+		}
+	});
+var _user$project$Bolsa$Symbol = function (a) {
+	return {ctor: 'Symbol', _0: a};
+};
+var _user$project$Bolsa$Submit = {ctor: 'Submit'};
+var _user$project$Bolsa$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$form,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onSubmit(_user$project$Bolsa$Submit),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('text'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$required(true),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$placeholder('Nome'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(_user$project$Bolsa$Symbol),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$button,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Enviar'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(model.symbol),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$table,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$thead,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$tr,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$td,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Dia'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$td,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Abertura'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$td,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Alta'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$td,
+															{ctor: '[]'},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('Baixa'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$td,
+																{ctor: '[]'},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Fechamento'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$td,
+																	{ctor: '[]'},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('Volume'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$tbody,
+									{ctor: '[]'},
+									A2(_elm_lang$core$List$map, _user$project$Bolsa$viewStock, model.stocks)),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Bolsa$main = _elm_lang$html$Html$program(
+	{
+		init: {ctor: '_Tuple2', _0: _user$project$Bolsa$init, _1: _elm_lang$core$Platform_Cmd$none},
+		view: _user$project$Bolsa$view,
+		update: _user$project$Bolsa$update,
+		subscriptions: function (_p5) {
+			return _elm_lang$core$Platform_Sub$none;
+		}
+	})();
