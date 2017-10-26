@@ -1,0 +1,140 @@
+var _user$project$Dois$valorDef = function (okx) {
+	var _p0 = okx;
+	if (_p0.ctor === 'Ok') {
+		return _p0._0;
+	} else {
+		return 0;
+	}
+};
+var _user$project$Dois$updateView = F2(
+	function (action, model) {
+		var _p1 = action;
+		switch (_p1.ctor) {
+			case 'Campo1':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						n1: _user$project$Dois$valorDef(
+							_elm_lang$core$String$toInt(_p1._0))
+					});
+			case 'Campo2':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						n2: _user$project$Dois$valorDef(
+							_elm_lang$core$String$toInt(_p1._0))
+					});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{res: model.n1 + model.n2});
+		}
+	});
+var _user$project$Dois$Model = F3(
+	function (a, b, c) {
+		return {n1: a, n2: b, res: c};
+	});
+var _user$project$Dois$modelInicial = A3(_user$project$Dois$Model, 0, 0, 0);
+var _user$project$Dois$Somar = {ctor: 'Somar'};
+var _user$project$Dois$Campo2 = function (a) {
+	return {ctor: 'Campo2', _0: a};
+};
+var _user$project$Dois$Campo1 = function (a) {
+	return {ctor: 'Campo1', _0: a};
+};
+var _user$project$Dois$viewSoma = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$input,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$type_('number'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$placeholder('Digite um numero'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onInput(_user$project$Dois$Campo1),
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$br,
+					{ctor: '[]'},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('number'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$placeholder('Digite outro numero'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onInput(_user$project$Dois$Campo2),
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$button,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(_user$project$Dois$Somar),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Somar'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$br,
+								{ctor: '[]'},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'color', _1: 'blue'},
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											_elm_lang$core$Basics$toString(model.res)),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Dois$main = _elm_lang$html$Html$beginnerProgram(
+	{model: _user$project$Dois$modelInicial, view: _user$project$Dois$viewSoma, update: _user$project$Dois$updateView})();

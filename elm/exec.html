@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <div id="app">
+        
+        </div>
+        <div id="app2">
+        
+        </div>
+        <script type="text/javascript" src="um.js"></script>
+        <script type="text/javascript" src="dois.js"></script>
+        <script>
+            var node = document.getElementById('app');
+            var app = Elm.Main.embed(node);
+            var node2 = document.getElementById('app2');
+            var app2 = Elm.Dois.embed(node2);
+        </script>
+        
+    </body>
+</html>
