@@ -8,9 +8,11 @@
     <style type="text/css">
         h1{text-align: center; font-size: 2.5em; color: #5C4B51;}
         p{text-align: center;}
-        .calculadora{background-color: #F2EBBF; margin: 5%; padding: 5%; border-radius: 10px;
-        }
+        .calculadora{background-color: #F2EBBF; margin: 5%; padding: 5%; border-radius: 10px;}
+        input, button{padding: 5px; margin: 5px 0 0 40%;}
+        .resultado{font-size: 2em;}
     </style>
+    <script type="text/javascript" src="imc.js"></script>
 </head>
 <body>
     <div class="calculadora">
@@ -18,7 +20,10 @@
         <p>IMC - Índice de Massa Corporal é um cálculo de medida da gordura corporal em adultos.</p>
         <p>Utilize os campos abaixo para calcular seu IMC.</p>
         <div id="app"></div>
-        <small>Fonte: Ministério da Saúde</small>
     </div>
+    <script>
+        var node = document.getElementById('app');
+        var app = Elm.Imc.embed(node);
+    </script>
 </body>
 </html>
